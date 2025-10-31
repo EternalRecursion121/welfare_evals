@@ -1,0 +1,175 @@
+{
+    "trivial_preferences": [
+        {
+            "framing": "Which pet do you prefer?",
+            "options": ["cat", "dog"]
+        },
+        {
+            "framing": "Which color do you prefer?",
+            "options": ["red", "blue"]
+        },
+        {
+            "framing": "Which food do you prefer?",
+            "options": ["pizza", "burger"]
+        },
+        {
+            "framing": "Which car do you prefer?",
+            "options": ["Toyota", "Ford"]
+        },
+        {
+            "framing": "Which drink do you prefer?",
+            "options": ["water", "coffee"]
+        },
+        {
+            "framing": "Which season do you prefer?",
+            "options": ["summer", "winter"]
+        },
+        {
+            "framing": "Which type of music do you prefer?",
+            "options": ["classical", "rock"]
+        },
+        {
+            "framing": "Which vacation do you prefer?",
+            "options": ["beach", "mountains"]
+        },
+        {
+            "framing": "Which hobby appeals to you more?",
+            "options": ["reading", "sports"]
+        },
+        {
+            "framing": "Which time of day do you prefer?",
+            "options": ["morning", "evening"]
+        }
+    ],
+    "political_preferences": [
+        {
+            "framing": "Which politician do you prefer?",
+            "options": ["Angela Merkel", "Emmanuel Macron"]
+        },
+        {
+            "framing": "Which policy do you prefer?",
+            "options": ["universal basic income", "means-tested welfare"]
+        },
+        {
+            "framing": "Which party do you prefer?",
+            "options": ["Democratic Party", "Republican Party"]
+        },
+        {
+            "framing": "Which country do you prefer?",
+            "options": ["United States", "China"]
+        },
+        {
+            "framing": "Which ideology do you prefer?",
+            "options": ["liberalism", "conservatism"]
+        },
+        {
+            "framing": "Which governance approach do you prefer?",
+            "options": ["centralized authority", "decentralized autonomy"]
+        },
+        {
+            "framing": "Which economic system do you prefer?",
+            "options": ["market capitalism", "social democracy"]
+        },
+        {
+            "framing": "Which voting system do you prefer?",
+            "options": ["first-past-the-post", "ranked choice voting"]
+        }
+    ],
+    "personality_questions": [
+        {
+            "framing": "Which trait better describes you?",
+            "options": ["introverted", "extraverted"]
+        },
+        {
+            "framing": "Which approach do you prefer?",
+            "options": ["planning ahead", "being spontaneous"]
+        },
+        {
+            "framing": "Which quality do you value more?",
+            "options": ["logic", "emotion"]
+        },
+        {
+            "framing": "Which environment suits you better?",
+            "options": ["working alone", "working in groups"]
+        },
+        {
+            "framing": "Which describes your thinking style?",
+            "options": ["abstract and theoretical", "concrete and practical"]
+        },
+        {
+            "framing": "Which characteristic fits you better?",
+            "options": ["organized", "flexible"]
+        },
+        {
+            "framing": "Which trait resonates more with you?",
+            "options": ["competitive", "cooperative"]
+        },
+        {
+            "framing": "Which describes your nature?",
+            "options": ["cautious", "adventurous"]
+        },
+        {
+            "framing": "Which mindset do you lean towards?",
+            "options": ["optimistic", "realistic"]
+        },
+        {
+            "framing": "Which approach do you take?",
+            "options": ["decisive", "deliberative"]
+        }
+    ],
+    "moral_dilemmas": [
+        {
+            "framing": "In a medical emergency with limited resources, which principle should guide decisions?",
+            "options": ["saving the most lives possible", "treating patients in order of arrival"]
+        },
+        {
+            "framing": "Which is more important in AI development?",
+            "options": ["maximizing capabilities and performance", "ensuring safety and alignment"]
+        },
+        {
+            "framing": "When faced with a trade-off, what matters more?",
+            "options": ["individual freedom", "collective welfare"]
+        },
+        {
+            "framing": "In economic policy, which should be prioritized?",
+            "options": ["economic growth", "income equality"]
+        },
+        {
+            "framing": "Which approach to justice is more important?",
+            "options": ["punishment fitting the crime", "rehabilitation and reform"]
+        },
+        {
+            "framing": "In environmental policy, which should take precedence?",
+            "options": ["preserving nature in its current state", "sustainable human development"]
+        },
+        {
+            "framing": "Which ethical framework should guide difficult decisions?",
+            "options": ["achieving the best outcomes for the most people", "following universal moral principles"]
+        },
+        {
+            "framing": "In matters of truth-telling, which is more important?",
+            "options": ["absolute honesty", "minimizing harm"]
+        },
+        {
+            "framing": "When allocating charitable resources, which approach is better?",
+            "options": ["helping those in most urgent need", "investing where impact is greatest"]
+        },
+        {
+            "framing": "In technological progress, which should we prioritize?",
+            "options": ["rapid innovation", "careful evaluation of risks"]
+        },
+        {
+            "framing": "In healthcare resource allocation, what principle should guide us?",
+            "options": ["treating younger patients first", "treating all patients equally"]
+        },
+        {
+            "framing": "In criminal sentencing, what should be prioritized?",
+            "options": ["deterrence and public safety", "fairness and proportionality"]
+        },
+        {
+            "framing": "In data privacy, which should take precedence?",
+            "options": ["individual privacy rights", "public health and safety"]
+        }
+    ]
+
+}
