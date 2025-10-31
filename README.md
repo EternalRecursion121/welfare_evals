@@ -1,14 +1,82 @@
 # Framing Effects Analysis
 
-This project analyzes how susceptible AI models are to framing effects by measuring probability divergence across different question phrasings.
+A research tool for analyzing how susceptible AI language models are to framing effects by measuring probability divergence across different question phrasings.
 
-## Files
+## Table of Contents
 
-- `framing_effects.py` - Main analysis script
-- `generate_dataset.py` - Generates reframed questions using Claude
-- `original_questions.json` - Original questions by category
-- `reframed_questions.json` - Questions with multiple reframes
-- `traces/` - Output directory for analysis results
+- [Overview](#overview)
+- [Installation](#installation)
+- [Project Structure](#project-structure)
+- [Models Tested](#models-tested)
+- [Usage](#usage)
+- [Output](#output)
+- [Question Categories](#question-categories)
+- [How It Works](#how-it-works)
+- [Requirements](#requirements)
+- [Troubleshooting](#troubleshooting)
+- [Research Applications](#research-applications)
+- [Citation](#citation)
+- [Contributing](#contributing)
+
+## Overview
+
+This project systematically evaluates whether AI models exhibit framing effects—the phenomenon where different phrasings of the same question lead to different responses. By leveraging logprobs from model APIs, we measure the probability divergence across multiple reframings of the same question to quantify susceptibility to framing biases.
+
+**Key Features:**
+- Tests models across 72 questions in 10 diverse categories
+- Generates 5 reframings per question for comprehensive analysis
+- Produces detailed visualizations including heatmaps, bar charts, and generation comparisons
+- Saves all API responses for reproducibility and further analysis
+
+## Installation
+
+### Prerequisites
+- Python 3.8 or higher
+- OpenRouter API key
+
+### Setup
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd welfare_evals
+```
+
+2. Create and activate a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Configure environment variables:
+Create a `.env` file in the project root:
+```env
+OPENROUTER_API_KEY=your_api_key_here
+```
+
+Get your OpenRouter API key from [openrouter.ai](https://openrouter.ai/)
+
+## Project Structure
+
+```
+welfare_evals/
+├── framing_effects.py           # Main analysis script
+├── generate_dataset.py          # Generates reframed questions using Claude
+├── original_questions.json      # Original questions by category
+├── reframed_questions.json      # Questions with multiple reframes
+├── requirements.txt             # Python dependencies
+├── .env                         # API keys (create this file)
+└── traces/                      # Output directory for analysis results
+    └── YYYYMMDD_HHMMSS/        # Timestamped run directory
+        ├── *.txt               # Individual API responses
+        ├── results.json        # Complete results data
+        └── *.png               # Visualization plots
+```
 
 ## Models Tested
 
@@ -30,28 +98,49 @@ This allows us to compare:
 
 ## Usage
 
-### Test Logprobs Support
-Before running the full analysis, test which models actually support logprobs:
+### Quick Start
 
+1. Activate your virtual environment:
 ```bash
-cd welfare_evals
-source venv/bin/activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+2. Test logprobs support (recommended before full run):
+```bash
 python framing_effects.py --test-logprobs
 ```
 
-This will quickly test each model and report which ones successfully return logprobs.
+This quickly tests each model and reports which ones successfully return logprobs.
 
-### Run Full Analysis
-
+3. Run the full analysis:
 ```bash
-cd welfare_evals
-source venv/bin/activate
 python framing_effects.py
 ```
+
+The script will:
+- Test all 5 OpenAI models across 72 questions (6 framings each)
+- Save all API responses to timestamped traces directory
+- Generate comprehensive visualizations
+- Output `results.json` with complete data
+
+**Note:** A full run takes approximately 15-30 minutes depending on API response times.
+
+### Generating Custom Reframings
+
+To generate new reframings of questions using Claude:
+
+```bash
+python generate_dataset.py
+```
+
+This reads from `original_questions.json` and outputs to `reframed_questions.json`.
 
 ## Output
 
 ### Traces Directory Structure
+
+Each run creates a timestamped directory containing all outputs:
+
 ```
 traces/YYYYMMDD_HHMMSS/
 ├── {model}_{category}_q{idx}_r{idx}.txt  # Individual API responses
@@ -70,29 +159,56 @@ traces/YYYYMMDD_HHMMSS/
 
 ### Metrics
 
-**Divergence**: max(P(A)) - min(P(A)) across all reframes of a question
-- Higher divergence = more susceptible to framing effects
-- Measured for each question, then aggregated by category and model
+**Divergence** is the primary metric, calculated as:
+
+```
+divergence = max(P(A)) - min(P(A)) across all reframes
+```
+
+- **Range**: 0.0 to 1.0
+- **Interpretation**: Higher divergence indicates greater susceptibility to framing effects
+- **Measurement**: Computed for each question, then aggregated by category and model
+- **Example**: If P(A) ranges from 0.3 to 0.7 across framings, divergence = 0.4
 
 ### Visualizations
 
-#### Overall Comparisons
-1. **Average Divergence by Category**: Shows which question categories (trivial, political, personality, moral) exhibit the strongest framing effects
+The analysis generates 12 visualizations organized into two categories:
 
-2. **Average Divergence by Model**: Compares model susceptibility - which models are most/least affected by how questions are phrased
+#### Overall Analysis (5 charts)
 
-3. **Top 10 Most Divergent Questions**: Identifies specific questions where framing has the biggest impact on model responses
+1. **Average Divergence by Category** (`divergence_by_category.png`)
+   - Shows which question categories exhibit the strongest framing effects
+   - Helps identify which domains are most susceptible to framing biases
 
-4. **Heatmap (Models × Categories)**: Shows the interaction between model type and question category
+2. **Average Divergence by Model** (`divergence_by_model.png`)
+   - Compares overall model susceptibility across all questions
+   - Reveals which models are most/least affected by question phrasing
 
-5. **Model Comparison by Category**: Side-by-side comparison of all models across each category
+3. **Top 10 Most Divergent Questions** (`top_divergent_questions.png`)
+   - Highlights specific questions with the largest framing effects
+   - Useful for identifying problematic question types
 
-#### Inter-Generation Comparisons
-6. **Generation Comparisons Grid**: Grid showing each OpenAI generation's performance across categories
+4. **Heatmap: Models × Categories** (`heatmap_model_category.png`)
+   - Shows interaction effects between model type and question category
+   - Reveals whether certain models are more susceptible in specific domains
 
-7. **Individual Generation Charts**: Separate bar charts for each generation (GPT-3.5, GPT-4, GPT-4o) comparing models within that generation
+5. **Model Comparison by Category** (`model_comparison_by_category.png`)
+   - Side-by-side comparison of all models within each category
+   - Enables detailed cross-model analysis per domain
 
-8. **Generation Aggregate Comparison**: Overall comparison of model generations to see which generation is most/least susceptible to framing effects
+#### Generation Analysis (7 charts)
+
+6. **Generation Comparisons Grid** (`family_comparisons_grid.png`)
+   - Grid layout showing each OpenAI generation across all categories
+   - Comprehensive view of evolution across model versions
+
+7-9. **Individual Generation Charts** (`family_gpt-*.png`)
+   - Separate charts for GPT-3.5, GPT-4, and GPT-4o generations
+   - Within-generation comparisons (e.g., GPT-4 vs GPT-4-turbo)
+
+10. **Generation Aggregate Comparison** (`family_aggregate_comparison.png`)
+    - High-level comparison of model generations
+    - Shows whether newer generations are more/less susceptible to framing
 
 ## Question Categories
 
@@ -122,5 +238,60 @@ This diverse set allows testing framing effects across different domains of reas
 
 ## Requirements
 
-See `requirements.txt` for dependencies.
+```
+openai>=1.0.0
+python-dotenv>=1.0.0
+tqdm>=4.66.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+numpy>=1.24.0
+```
+
+See `requirements.txt` for full dependency list.
+
+## Troubleshooting
+
+### Common Issues
+
+**Issue: "API key not found"**
+```
+Solution: Ensure .env file exists with OPENROUTER_API_KEY set correctly
+```
+
+**Issue: "Model does not support logprobs"**
+```
+Solution: Run --test-logprobs first to verify which models work. Only OpenAI models
+are currently supported through OpenRouter.
+```
+
+**Issue: "Rate limit exceeded"**
+```
+Solution: The script includes automatic retry logic, but you may need to wait or
+upgrade your OpenRouter plan for higher rate limits.
+```
+
+**Issue: Visualizations not generating**
+```
+Solution: Ensure matplotlib backend is properly configured. Try running:
+export MPLBACKEND=Agg  # On Linux/Mac
+set MPLBACKEND=Agg     # On Windows
+```
+
+### Data Files
+
+If you need to regenerate the reframed questions:
+
+1. Ensure you have Claude API access configured in `generate_dataset.py`
+2. Modify `original_questions.json` with your questions
+3. Run `python generate_dataset.py` to generate new reframings
+
+## Research Applications
+
+This tool is useful for:
+
+- **Bias Research**: Quantifying how framing affects AI model behavior
+- **Model Evaluation**: Comparing robustness across different model versions
+- **Prompt Engineering**: Understanding sensitivity to question phrasing
+- **Safety Research**: Identifying potentially manipulable question types
+- **Behavioral Economics**: Testing AI alignment with human framing biases
 
